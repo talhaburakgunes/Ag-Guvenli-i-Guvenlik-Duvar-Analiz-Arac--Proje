@@ -231,3 +231,4 @@ API başarılı bir şekilde çalıştığında, yukarıda verilen JSON formatı
 
 Önemli Not
 Bu API yalnızca izinli testler ve etik hacker'lar tarafından kullanılmalıdır. Gerçek sistemlere zarar vermemek için yalnızca sahip olduğunuz ağlarda testler yapınız.
+2320191066-Talha Burak Güneş
