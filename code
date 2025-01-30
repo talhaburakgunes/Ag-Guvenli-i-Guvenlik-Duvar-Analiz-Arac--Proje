@@ -1,39 +1,36 @@
-# Güvenlik Duvarı Analiz Aracı API
-
 from flask import Flask, request, jsonify
 
 app = Flask(__name__)
 
 # Tarama fonksiyonu
-def tarama_yap(hedef_ip, port_araligi, kural_seti_veritabani="IETF", ozelleştirilmis_modul=False, detay_seviyesi="orta"):
-    # Bu örnekte sadece statik bir veri döneceğiz
-    # Gerçek bir tarama gerçekleştirmek için uygun kütüphaneler ve kural seti veritabanı entegrasyonu gerekir
+def analiz_yap(hedef_ip, port_araligi, kural_veritabani="IETF", ozelleştirilmis_modul=False, detay_seviyesi="orta"):
+    # Gerçek tarama yerine statik örnek veri döneceğiz
     sonuc = {
-        "taramalanan_ip": hedef_ip,
+        "ip_adresi": hedef_ip,
         "portlar": [
-            {"port": 80, "durum": "açık"},
-            {"port": 443, "durum": "kapalı"}
+            {"port_numarasi": 80, "port_durumu": "açık"},
+            {"port_numarasi": 443, "port_durumu": "kapalı"}
         ],
-        "güvenlik_bypass_tespitleri": [
+        "bypass_teknikleri": [
             {
-                "bypass_teknigi": "TCP FIN Scan",
-                "risk_seviyesi": "yüksek",
-                "açıklama": "Bu teknik, güvenlik duvarının bypass edilmesine yol açabilir."
+                "teknik_adi": "TCP FIN Scan",
+                "risk_puanı": "yüksek",
+                "detaylar": "Bu teknik, firewall güvenlik önlemlerini atlatabilir."
             }
         ],
-        "yapılandırma_uyarilari": [
+        "yapilandirma_uyarilari": [
             {
-                "uyari": "Açık portlar tespit edildi, güvenlik önlemleri alınmalı.",
-                "seviye": "yüksek"
+                "uyari_mesaji": "Açık portlar tespit edildi. Güvenlik riski oluşturabilir.",
+                "kritik_seviye": "yüksek"
             }
         ]
     }
     return sonuc
 
 # API endpoint
-@app.route('/tarama', methods=['POST'])
-def tarama():
-    # Kullanıcıdan gelen veriyi al
+@app.route('/analiz', methods=['POST'])
+def analiz():
+    # Kullanıcıdan gelen JSON verisini al
     data = request.get_json()
 
     try:
@@ -42,23 +39,23 @@ def tarama():
         port_araligi = data['port_araligi']
         
         # Opsiyonel parametreler
-        kural_seti_veritabani = data.get('kural_seti_veritabani', 'IETF')
+        kural_veritabani = data.get('kural_veritabani', 'IETF')
         ozelleştirilmis_modul = data.get('ozelleştirilmis_modul', False)
         detay_seviyesi = data.get('detay_seviyesi', 'orta')
 
-        # Tarama işlemini başlat
-        tarama_sonucu = tarama_yap(hedef_ip, port_araligi, kural_seti_veritabani, ozelleştirilmis_modul, detay_seviyesi)
+        # Tarama analizini başlat
+        analiz_sonucu = analiz_yap(hedef_ip, port_araligi, kural_veritabani, ozelleştirilmis_modul, detay_seviyesi)
 
-        # Başarı durumunda sonucu döndür
+        # Başarıyla tamamlanan analiz sonucunu döndür
         return jsonify({
             "sonuç": {
                 "durum": "başarılı",
-                "veri": tarama_sonucu,
+                "veri": analiz_sonucu,
                 "hata_mesajı": ""
             }
         })
     except Exception as e:
-        # Hata durumunda hata mesajını döndür
+        # Hata durumu
         return jsonify({
             "sonuç": {
                 "durum": "başarısız",
