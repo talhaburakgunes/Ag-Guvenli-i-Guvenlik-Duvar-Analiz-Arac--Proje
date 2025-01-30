@@ -1,10 +1,11 @@
-{
-    "sonuç": {
-        "durum": "başarılı",
-        "hata_mesajı": "",
-        "veri": {
-            "hedef_ip": "192.168.1.100",
-            "port_araligi": "80-443"
-        }
-    }
-}
+Zorunlu Parametreler:
+
+1. hedef_ip (str):
+   - Tür: string (Yazı)
+   - Açıklama: Tarama yapılacak IP adresi. Bu adres, hedef sistemin IP adresi olmalıdır.
+   - Örnek Değer: "192.168.1.100", "10.0.0.1"
+
+2. port_araligi (str):
+   - Tür: string (Yazı)
+   - Açıklama: Tarama yapılacak port aralığını belirtir. Bu aralık, başlatılacak port ve bitiş portunu kapsar (örn: "80-443").
+   - Örnek Değer: "80-443", "22-22", "8080", "1-65535"
